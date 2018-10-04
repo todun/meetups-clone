@@ -1,6 +1,6 @@
 {
-  "name": "frontend",
-  "short_name": "frontend",
+  "name": "client",
+  "short_name": "client",
   "icons": [
     {
       "src": "/img/icons/android-chrome-192x192.png",

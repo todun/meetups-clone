@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { gql } from "apollo-boost";
+//import { gql } from "graphql-tag";
 //import axios from "axios";
 
-import apolloProvider from "./provider";
+//import apolloProvider from "./provider";
 
 Vue.use(Vuex);
 
@@ -30,28 +30,26 @@ export default new Vuex.Store({
     clearError: state => (state.error = null)
   },
   actions: {
-    changeLocation: async ({ commit }) => {
-      commit("setLoading", true);
-
-      try {
-        const response = await apolloProvider.query({
-          query: gql`
-            query CurrentLocation {
-              currentLocation {
-                location
-              }
-            }
-          `
-        });
-
-        console.log(response);
-        // commit("setLocation", location);
-        commit("setLoading", false);
-        commit("clearError");
-      } catch (error) {
-        commit("setError", error.message);
-        commit("setLoading", false);
-      }
-    }
+    // changeLocation: async ({ commit }) => {
+    //   commit("setLoading", true);
+    //   try {
+    //     const response = await apolloProvider.query({
+    //       query: gql`
+    //         query CurrentLocation {
+    //           currentLocation {
+    //             location
+    //           }
+    //         }
+    //       `
+    //     });
+    //     console.log(response);
+    //     // commit("setLocation", location);
+    //     commit("setLoading", false);
+    //     commit("clearError");
+    //   } catch (error) {
+    //     commit("setError", error.message);
+    //     commit("setLoading", false);
+    //   }
+    // }
   }
 });
