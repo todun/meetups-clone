@@ -102,25 +102,6 @@ const router = new Router({
       }
     },
     {
-      path: "/accounts/signup",
-      name: "signup",
-      component: () =>
-        import(/* webpackChunkName: "signup" */ "./views/Signup.vue"),
-      meta: {
-        title: "Meetups-Clone | Create Account",
-        metaTags: [
-          {
-            name: "description",
-            content: "The sign up page of the Meetups-Clone app."
-          },
-          {
-            property: "og:description",
-            content: "The sign up page of the Meetups-Clone app."
-          }
-        ]
-      }
-    },
-    {
       path: "/accounts/login",
       name: "login",
       component: () =>
