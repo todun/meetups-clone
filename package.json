@@ -15,7 +15,7 @@
     "build-babel": "babel -d ./server/dist ./server/src -s",
     "build": "yarn build-babel",
     "start": "node server/build/server.js",
-    "postinstall": "cd client && yarn build"
+    "heroku-postbuild": "YARN_PRODUCTION=false yarn build && cd client && yarn && yarn build"
   },
   "dependencies": {
     "apollo-server-express": "1.3.4",
