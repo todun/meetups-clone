@@ -20,16 +20,16 @@ import './db';
 const app = express();
 
 // Middlewares
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use(express.static(path.join(__dirname, '../../client/dist')));
 app.use(morgan('dev'));
 app.use(cors());
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../../client/build'));
+  app.use(express.static('../../client/dist'));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../client', 'dist', 'index.html'));
   });
 }
 
