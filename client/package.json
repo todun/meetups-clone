@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
     "apollo-cache-inmemory": "^1.2.10",
     "apollo-client": "^2.4.2",
@@ -29,7 +30,6 @@
     "weekstart": "^1.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-plugin-eslint": "^3.0.4",
     "@vue/cli-plugin-pwa": "^3.0.4",
     "@vue/cli-plugin-unit-jest": "^3.0.4",
