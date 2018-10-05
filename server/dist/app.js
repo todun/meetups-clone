@@ -59,16 +59,16 @@ const app = (0, _express2.default)();
 
 
 // DB config
-app.use(_express2.default.static(_path2.default.join(__dirname, '../frontend/build')));
+app.use(_express2.default.static(_path2.default.join(__dirname, '../../client/dist')));
 app.use((0, _morgan2.default)('dev'));
 app.use((0, _cors2.default)());
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(_express2.default.static('../../client/build'));
+  app.use(_express2.default.static('../../client/dist'));
 
   app.get('*', (req, res) => {
-    res.sendFile(_path2.default.join(__dirname, '../../client', 'build', 'index.html'));
+    res.sendFile(_path2.default.join(__dirname, '../../client', 'dist', 'index.html'));
   });
 }
 
