@@ -1,7 +1,7 @@
 import { setContext } from "apollo-link-context";
 
 // Get the authentication token from local storage if it exists
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("meetup-token");
 
 const authLink = setContext((_, { headers }) => {
   return {

@@ -28,4 +28,8 @@ const MeetupSchema = new Schema(
   }
 );
 
+MeetupSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
 export default mongoose.model('Meetup', MeetupSchema);

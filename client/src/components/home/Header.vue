@@ -2,15 +2,21 @@
 	<div class="home-header">
 		<h1 class="heading-one">What do you love?</h1>
 		<p class="paragraph">Do more of it with Meetup</p>
-		<router-link class="button" to="/accounts/signup">Sign up</router-link>
+		<router-link 
+      v-show="!isAuthenticated" 
+      class="button" 
+      to="/accounts/signup"
+    >Sign up</router-link>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "home-header",
-  data() {
-    return {};
+  computed: {
+    ...mapGetters({ isAuthenticated: "auth/isAuthenticated" })
   }
 };
 </script>

@@ -13,4 +13,8 @@ const CommentSchema = new Schema(
   }
 );
 
+CommentSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
 export default mongoose.model('Comment', CommentSchema);

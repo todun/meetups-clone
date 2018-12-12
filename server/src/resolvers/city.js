@@ -1,6 +1,6 @@
 export default {
   Query: {
-    allCities: async (parent, args, { City }, info) => {
+    allCities: async (parent, args, { models: { City } }, info) => {
       try {
         //...
       } catch (error) {
@@ -9,7 +9,7 @@ export default {
     },
   },
   Mutation: {
-    addCity: async (parent, args, { City }, info) => {
+    addCity: async (parent, args, { models: { City } }, info) => {
       try {
         //...
       } catch (error) {

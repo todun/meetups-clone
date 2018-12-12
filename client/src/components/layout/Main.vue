@@ -1,7 +1,7 @@
 <template>
 	<main class="main">
 		<transition name="router-anim">
-		   <router-view/>
+		  <router-view/>
 		</transition>
 	</main>
 </template>

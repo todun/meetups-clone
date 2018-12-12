@@ -1,32 +1,59 @@
 <template>
-	<div class="meetup-meaning">
-		<img class="image" src="../../assets/images/people.svg" alt="People">
-		<div class="description">
-			<p class="description--step">Step 4 of 4</p>
-			<h3 class="description--heading">What it means to be a Meetup</h3>
-			<ul class="description--list">
-				<li class="description--list-item">Real, in-person conversations</li>
-				<li class="description--list-item">Open and honest intentions</li>
-				<li class="description--list-item">Always safe and respectful</li>
-				<li class="description--list-item">Put your members first</li>
-			</ul>
-			<p>
-				<span>We review all Meetups based on our </span>
-				<router-link to="/guidelines">Community Guidelines</router-link>.
-			</p>
-			<button class="description--button" @click="createMeetup">Agree & Continue</button>
-		</div>
-	</div>
+  <div class="meetup-meaning">
+    <img class="image" src="../../assets/images/people.svg" alt="People" />
+    <div class="description">
+      <p class="description--step">Step 4 of 4</p>
+      <h3 class="description--heading">What it means to be a Meetup</h3>
+      <ul class="description--list">
+        <li class="description--list-item">Real, in-person conversations</li>
+        <li class="description--list-item">Open and honest intentions</li>
+        <li class="description--list-item">Always safe and respectful</li>
+        <li class="description--list-item">Put your members first</li>
+      </ul>
+      <p>
+        <span>We review all Meetups based on our </span>
+        <router-link to="/guidelines">Community Guidelines</router-link>.
+      </p>
+      <button-loading
+        v-if="isLoading"
+        :button-text="'Loading'"
+        :is-loading="isLoading"
+      />
+      <button v-else class="description--button" @click="createMeetup">
+        Agree & Continue
+      </button>
+      <transition name="fade">
+        <p v-show="isLoginMsgDisplayed" class="login-msg">
+          <span>You must be logged in to submit new meetup. </span>
+          <router-link to="/accounts/login">Click</router-link> here to login.
+        </p>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
+import ButtonLoading from "@/components/shared/ButtonLoading";
+
 export default {
   name: "meetup-meaning",
+  components: {
+    ButtonLoading
+  },
   props: {
     createMeetup: {
       type: Function,
       required: true
+    },
+    isLoginMsgDisplayed: {
+      type: Boolean,
+      required: true
     }
+  },
+  computed: {
+    ...mapGetters(["isLoading"])
   }
 };
 </script>
@@ -87,5 +114,19 @@ $btn-color: #f13a59;
       }
     }
   }
+}
+
+.login-msg {
+  font-size: 0.85rem;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

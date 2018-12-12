@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { Datetime } from "vue-datetime";
 
 export default {
@@ -59,13 +60,17 @@ export default {
   data() {
     return {
       name: "",
-      hostedBy: "",
       description: "",
       imageUrl: "",
       eventStart: "",
       eventEnd: "",
       areExamplesDisplayed: false
     };
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: "user/currentUser"
+    })
   },
   methods: {
     showExamples() {
@@ -76,7 +81,7 @@ export default {
         {
           details: {
             name: this.name.trim(),
-            hostedBy: this.hostedBy.trim() || "5ae1f437474e7116ac30511c",
+            hostedBy: "5ae1f437474e7116ac30511c",
             description: this.description.trim(),
             imageUrl: this.imageUrl.trim() || "https://i.imgur.com/E5yG11X.jpg",
             eventStart: this.eventStart,
@@ -231,5 +236,27 @@ $btn-color: #f13a59;
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.event-datetime {
+  height: 2rem;
+  padding: 0.25rem 1rem;
+  font-size: 0.75rem;
+  background-color: #f2f2f2;
+  border: 1px solid #e6e6e6;
+}
+
+.theme-orange {
+  .vdatetime-popup__header,
+  .vdatetime-calendar__month__day--selected > span > span,
+  .vdatetime-calendar__month__day--selected:hover > span > span {
+    background-color: $btn-color;
+  }
+
+  .vdatetime-year-picker__item--selected,
+  .vdatetime-time-picker__item--selected,
+  .vdatetime-popup__actions__button {
+    color: $btn-color;
+  }
 }
 </style>

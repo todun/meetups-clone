@@ -1,16 +1,18 @@
 <template>
-	<div class="find-meetups page">
+  <div class="find-meetups page">
     <find-meetups-header :meetup-type="meetupType" />
     <query-handler :apolloQuery="query" :apolloVariables="{}">
       <template slot-scope="defaultSlotScope">
-        <search-meetups 
-          :currentLocation="defaultSlotScope.data.currentLocation.location.name" 
-          :change-user-location="changeUserLocation" 
+        <search-meetups
+          :currentLocation="defaultSlotScope.data.currentLocation.location.name"
+          :change-user-location="changeUserLocation"
         />
-        <meetups-grid :currentLocation="defaultSlotScope.data.currentLocation.location.name" />
+        <meetups-grid
+          :currentLocation="defaultSlotScope.data.currentLocation.location.name"
+        />
       </template>
     </query-handler>
-	</div>
+  </div>
 </template>
 
 <script>

@@ -1,4 +1,4 @@
-import { gql } from "graphql-tag";
+import gql from "graphql-tag";
 
 /*** Client side/local queries ***/
 
@@ -22,27 +22,38 @@ export const fetchCurrentLocation = gql`
 
 export const fetchMeetups = gql`
   query AllMeetups {
-    allMeetupEvents {
-      _id
+    allMeetups {
+      id
       name
     }
   }
 `;
 
-export const fetchUsers = gql`
+export const fetchAllUsers = gql`
   query AllUsers {
     allUsers {
-      _id
-      name
+      id
+      fullname
+    }
+  }
+`;
+
+export const fetchUserById = gql`
+  query UserById {
+    userById {
+      id
+      fullname
+      email
     }
   }
 `;
 
 export const fetchCurrentUser = gql`
-  query CurrentUser($token: String!) {
-    currentUser(token: $token) {
-      _id
-      name
+  query CurrentUser {
+    currentUser {
+      id
+      fullname
+      email
     }
   }
 `;
@@ -50,7 +61,7 @@ export const fetchCurrentUser = gql`
 export const meetupsByLocation = gql`
   query MeetupsByLocation($location: String!) {
     meetupsByLocation(location: $location) {
-      _id
+      id
       addedBy
       location {
         name

@@ -1,75 +1,75 @@
-export default `
+import { gql } from 'apollo-server-express';
 
-scalar DateTime
+export default gql`
+  type MeetupLocation {
+    name: String!
+    longitude: Float!
+    latitude: Float!
+  }
 
-type MeetupLocation {
-  name: String!
-  longitude: Float!
-  latitude: Float!
-}
+  type MeetupDetails {
+    name: String!
+    hostedBy: User!
+    description: String!
+    imageUrl: String!
+    eventStart: Date!
+    eventEnd: Date!
+  }
 
-type MeetupDetails {
-  name: String!
-  hostedBy: String!
-  description: String!
-  imageUrl: String!
-  eventStart: DateTime!
-  eventEnd: DateTime!
-}
+  type Meetup {
+    id: ID!
+    addedBy: User!
+    type: [String!]!
+    location: MeetupLocation!
+    details: MeetupDetails!
+    photos: [String]
+    attendees: [User]!
+    comments: [Comment]!
+    createdAt: Date!
+    updatedAt: Date!
+  }
 
-type Meetup {
-  _id: ID!
-  addedBy: String!
-  type: [String!]!
-  location: MeetupLocation!
-  details: MeetupDetails!
-  photos: [String]
-  attendees: [String]!
-  comments: [String]!
-}
+  extend type Query {
+  	allMeetups: [Meetup]!
+    meetupsByType(type: String!): [Meetup]!
+    meetupsByLocation(location: String!): [Meetup]!
+    meetupsByTypeAndLocation(type: String!, location: String!): [Meetup]!
+  }
 
-# Queries
+  input MeetupLocationInput {
+    name: String!
+    longitude: Float!
+    latitude: Float!
+  }
 
-type Query {
-	allMeetups: [Meetup]!
-}
+  input MeetupDetailsInput {
+    name: String!
+    hostedBy: String!
+    description: String!
+    imageUrl: String!
+    eventStart: Date!
+    eventEnd: Date!
+  }
 
-type Query {
-  meetupsByType(type: String!): [Meetup]!
-}
+  input UpdateMeetupInput {
+    meetupId: ID!
+    location: MeetupLocationInput
+    type: [String]
+    name: String
+    hostedBy: String
+    description: String
+    imageUrl: String
+    eventStart: Date
+    eventEnd: Date
+  }
 
-type Query {
-  meetupsByLocation(location: String!): [Meetup]!
-}
-
-type Query {
-  meetupsByTypeAndLocation(type: String!, location: String!): [Meetup]!
-}
-
-# Mutations
-
-input MeetupLocationInput {
-  name: String!
-  longitude: Float!
-  latitude: Float!
-}
-
-input MeetupDetailsInput {
-  name: String!
-  hostedBy: String!
-  description: String!
-  imageUrl: String!
-  eventStart: DateTime!
-  eventEnd: DateTime!
-}
-
-type Mutation {
-  createMeetup(
-    addedBy: ID!
-  	location: MeetupLocationInput!, 
-    type: [String!]!, 
-  	details: MeetupDetailsInput!, 
-  ): Boolean
-}
-
-`
+  extend type Mutation {
+    createMeetup(
+      addedBy: ID!
+    	location: MeetupLocationInput!, 
+      type: [String!]!, 
+    	details: MeetupDetailsInput!, 
+    ): Meetup!
+    updateMeetup(input: UpdateMeetupInput!): Meetup!
+  }
+`;

@@ -1,31 +1,42 @@
-export default `
+import { gql } from 'apollo-server-express';
 
-type User {
-	_id: ID!
-	firstname: String!
-	lastname: String
-	email: String!
-	followers: [String!]
-	following: [String!]
-	token: String
-} 
+export default gql`
+	type User {
+		id: ID!
+		fullname: String!
+		firstname: String!
+		lastname: String!
+		email: String!
+		addedMeetups: [Meetup]!
+		hostedMeetups: [Meetup]!
+		attendedMeetups: [Meetup]!
+		attending: [Meetup]!
+		token: String
+	}
+	
+	extend type Query {
+		allUsers: [User]!
+	  userById(userId: ID!): User!
+	  currentUser: User!
+	}
 
-type AuthenticatedUser {
-	authenticated: Boolean!
-	token: String!
-}
+	input UserUpdateInput {
+		firstname: String
+		lastname: String
+	  email: String
+	  userId: ID!
+	}
 
-type Query {
-	allUsers: [User!]!
-  currentUser(token: String!): User!
-}
+	input ChangePasswordInput {
+	  email: String!
+	  oldPassword: String!
+	  newPassword: String!
+	}
 
-type Mutation {
-	createAccount(firstname: String!, lastname: String!, email: String!, password: String!): AuthenticatedUser!
-	loginToAccount(email: String!, password: String!): AuthenticatedUser
-	socialLogin(email: String!): User
-	updatePassword(email: String!, password: String!, newPassword: String!): Boolean
-	deleteAccount(email: String!, password: String!): Boolean
-}
-
-`;
+	extend type Mutation {
+		updateUserInfo(input: UserUpdateInput!): User!
+		updatePassword(input: ChangePasswordInput!): Boolean!
+		deleteAccount(id: ID!): Boolean!
+		removeUser(id: ID!): Boolean! #Admin only
+	}
+`

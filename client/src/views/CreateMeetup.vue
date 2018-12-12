@@ -3,30 +3,28 @@
     <meetup-header />
     <div class="steps">
       <transition name="fade">
-        <meetup-location 
-          v-if="displayStep.one" 
-          :add-meetup-info="addMeetupInfo" 
-        />
-      </transition>
-      <hr v-if="displayStep.two" class="divider">
-      <transition name="fade">
-        <meetup-topic 
-          v-if="displayStep.two" 
+        <meetup-location
+          v-if="displayStep.one"
           :add-meetup-info="addMeetupInfo"
         />
       </transition>
-      <hr v-if="displayStep.three" class="divider">
+      <hr v-if="displayStep.two" class="divider" />
       <transition name="fade">
-        <meetup-details 
-          v-if="displayStep.three" 
-          :add-meetup-info="addMeetupInfo" 
+        <meetup-topic v-if="displayStep.two" :add-meetup-info="addMeetupInfo" />
+      </transition>
+      <hr v-if="displayStep.three" class="divider" />
+      <transition name="fade">
+        <meetup-details
+          v-if="displayStep.three"
+          :add-meetup-info="addMeetupInfo"
         />
       </transition>
-      <hr v-if="displayStep.four" class="divider">
+      <hr v-if="displayStep.four" class="divider" />
       <transition name="fade">
-        <meetup-meaning 
-          v-if="displayStep.four" 
-          :create-meetup="createMeetup" 
+        <meetup-meaning
+          v-if="displayStep.four"
+          :create-meetup="createMeetup"
+          :is-login-msg-displayed="isLoginMsgDisplayed"
         />
       </transition>
     </div>
@@ -34,15 +32,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import MeetupHeader from "@/components/create/MeetupCreateHeader";
 import MeetupLocation from "@/components/create/MeetupLocation";
 import MeetupTopic from "@/components/create/MeetupTopic";
 import MeetupDetails from "@/components/create/MeetupDetails";
 import MeetupMeaning from "@/components/create/MeetupMeaning";
 
-import { createMeetup } from "@/queries";
+import { createNewMeetup } from "@/graphql/mutations";
 
 export default {
+  name: "create-meetup",
   components: {
     MeetupHeader,
     MeetupLocation,
@@ -69,8 +70,16 @@ export default {
           eventStart: "",
           eventEnd: ""
         }
-      }
+      },
+      isLoginMsgDisplayed: false
     };
+  },
+  computed: {
+    ...mapGetters({
+      isAuthenticated: "auth/isAuthenticated",
+      currentUser: "user/currentUser",
+      currentLocation: "currentLocation"
+    })
   },
   methods: {
     addMeetupInfo(meetupInfo, nextStep) {
@@ -82,21 +91,30 @@ export default {
         meetup: { location, type, details }
       } = this.$data;
 
-      this.$apollo.mutate({
-        mutation: createMeetup,
-        variables: {
-          addedBy: "5ae1f437474e7116ac30511c",
-          location,
-          type,
-          details
-        }
-      });
+      if (this.isAuthenticated && this.currentUser) {
+        this.$apollo.mutate({
+          mutation: createNewMeetup,
+          variables: {
+            addedBy: this.currentUser.id,
+            location,
+            type,
+            details
+          }
+        });
+      } else {
+        this.isLoginMsgDisplayed = true;
+      }
     }
   },
   created() {
     this.$eventBus.$on("display-next-step", payload => {
       this.displayStep[payload.step] = payload.shouldDisplay;
     });
+
+    this.meetup = {
+      ...this.meetup,
+      location: this.currentLocation
+    };
   },
   beforeDestroy() {
     this.$eventBus.$off(["display-next-step"]);

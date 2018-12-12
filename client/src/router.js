@@ -2,6 +2,19 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
 
+import store from "./store/index";
+
+function requireAuth(to, from, next) {
+  const isAuthenticated = store.getters["auth/isAuthenticated"];
+  const currentUser = store.getters["user/currentUser"];
+
+  if (!isAuthenticated || !currentUser) {
+    next("/accounts/login");
+  } else {
+    next();
+  }
+}
+
 Vue.use(Router);
 
 const router = new Router({
@@ -23,6 +36,26 @@ const router = new Router({
           }
         ]
       }
+    },
+    {
+      path: "/secret",
+      name: "secret",
+      component: () =>
+        import(/* webpackChunkName: "secret" */ "./views/Secret.vue"),
+      meta: {
+        title: "Meetups-Clone | Secret Page",
+        metaTags: [
+          {
+            name: "description",
+            content: "The secret page of the Meetups-Clone app."
+          },
+          {
+            property: "og:description",
+            content: "The secret page of the Meetups-Clone app."
+          }
+        ]
+      },
+      beforeEnter: requireAuth
     },
     {
       path: "/add",
@@ -48,6 +81,7 @@ const router = new Router({
       name: "find-meetups",
       component: () =>
         import(/* webpackChunkName: "found-meetups" */ "./views/FindMeetups.vue"),
+      props: true,
       meta: {
         title: "Meetups-Clone | Find Meetups",
         metaTags: [
@@ -60,8 +94,7 @@ const router = new Router({
             content: "The find meetups page of the Meetups-Clone app."
           }
         ]
-      },
-      props: true
+      }
     },
     {
       path: "/group/:name",
@@ -102,6 +135,25 @@ const router = new Router({
       }
     },
     {
+      path: "/accounts/signup",
+      name: "signup",
+      component: () =>
+        import(/* webpackChunkName: "signup" */ "./views/Signup.vue"),
+      meta: {
+        title: "Meetups-Clone | Create Account",
+        metaTags: [
+          {
+            name: "description",
+            content: "The sign up page of the Meetups-Clone app."
+          },
+          {
+            property: "og:description",
+            content: "The sign up page of the Meetups-Clone app."
+          }
+        ]
+      }
+    },
+    {
       path: "/accounts/login",
       name: "login",
       component: () =>
@@ -125,6 +177,21 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  // Redirect to previous route upon authentication
+  // const isAuthenticated = store.getters["auth/isAuthenticated"];
+  // const currentUser = store.getters["user/currentUser"];
+
+  // if (!isAuthenticated || !currentUser) {
+  //   const loginpath = window.location.pathname;
+
+  //   next({ path: "/accounts/login", query: { from: loginpath } });
+  // } else if (!isAuthenticated && currentUser) {
+  //   next("home");
+  // } else {
+  //   next();
+  // }
+
+  // Change page title
   const nearestWithTitle = to.matched
     .slice()
     .reverse()

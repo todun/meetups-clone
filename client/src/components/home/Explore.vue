@@ -4,7 +4,7 @@
     <div class="categories">
       <div class="category" v-for="category in categories" :key="category.name">
         <router-link 
-          :to="{ path: `find${category.path}`, params: { meetupType: category.name }}"
+          :to="{path: `find${category.path}`}"
         >
           <img class="category-image" :src="require(`../../assets/images/categories/${category.imgUrl}.jpeg`)" :alt="category.name">
           <p class="category-name">{{category.name}}</p>
@@ -12,7 +12,7 @@
       </div>
     </div>
   </div>
-</template>
+</template> 
 
 <script>
 import { categories } from "@/helpers";

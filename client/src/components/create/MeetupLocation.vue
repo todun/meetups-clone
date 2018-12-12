@@ -5,15 +5,11 @@
       <p class="location--step">Step 1 of 4</p>
       <h3 class="location--heading">What's your new Meetup Group's hometown?</h3>
       <search-location :location="location" v-if="isInputDisplayed"/>
-      <query-handler :apolloQuery="query" :apolloVariables="{}">
-        <template slot-scope="defaultSlotScope">
-          <p class="location--change">
-            <span><i class="fas fa-map-marker-alt"></i> </span>
-            {{defaultSlotScope.data.currentLocation.location.name}} 
-            <span @click="changeLocation">(change)</span>
-          </p>
-        </template>
-      </query-handler>
+      <p class="location--change">
+        <span><i class="fas fa-map-marker-alt"></i> </span>
+        {{currentLocation.name}} 
+        <span @click="changeLocation">(change)</span>
+      </p>
       <button class="location--button" @click="saveLocation">Next</button>
     </div>
   </div>
@@ -21,15 +17,13 @@
 
 <script>
 import SearchLocation from "../search-location/SearchLocation";
-import QueryHandler from "../shared/QueryHandler";
 
-import { fetchCurrentLocation } from "@/graphql/queries";
+import { mapGetters } from "vuex";
 
 export default {
   name: "meetup-location",
   components: {
-    SearchLocation,
-    QueryHandler
+    SearchLocation
   },
   props: {
     addMeetupInfo: {
@@ -39,10 +33,12 @@ export default {
   },
   data() {
     return {
-      query: fetchCurrentLocation,
       location: {},
       isInputDisplayed: false
     };
+  },
+  computed: {
+    ...mapGetters(["currentLocation"])
   },
   methods: {
     changeLocation() {

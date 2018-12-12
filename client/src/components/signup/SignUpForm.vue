@@ -1,7 +1,22 @@
 <template>
   <div>
-    <p v-show="error" class="error-message">{{ error }}</p>
-  	<form class="form">
+    <transition name="fade">
+      <notification 
+        v-show="errorMessage" 
+        :message="errorMessage"
+        notification-type="error"
+        :close-notification="closeNotification" 
+      />
+    </transition>
+    <transition name="fade">
+      <notification 
+        v-show="successMessage" 
+        :message="successMessage"
+        notification-type="success"
+        :close-notification="closeNotification"
+      />
+    </transition>
+  	<form class="form" @submit.prevent="createAccount">
       <div class="form-fullname">
     		<div class="form__grp form__grp--firstname">
     			<label class="form__label" for="name">Your firstname (this is public)</label>
@@ -28,7 +43,7 @@
   			</p>
   		</div>
   		<div class="form__grp">
-  			<button class="button" @click.prevent="createAccount">Continue</button>
+  			<button type="submit" class="button">Continue</button>
   		</div>
   		<p class="terms">
   			By clicking "Continue", you agree to our 
@@ -41,48 +56,80 @@
 </template>
 
 <script>
-import { createMeetupAccount } from "@/queries";
+import { mapMutations } from "vuex";
+
+import Notification from "../shared/Notification";
+import { createAccount } from "@/graphql/mutations";
 
 export default {
   name: "signup-form",
+  components: {
+    Notification
+  },
   data() {
     return {
       firstname: "",
       lastname: "",
       email: "",
       password: "",
-      error: ""
+      successMessage: "",
+      errorMessage: ""
     };
   },
   methods: {
+    ...mapMutations({ setAuth: "auth/setAuth" }),
     async createAccount() {
       const { firstname, lastname, email, password } = this.$data;
 
       try {
-        const response = await this.$apollo.mutate({
-          mutation: createMeetupAccount,
+        const {
+          data: {
+            signup: { authenticated, token }
+          }
+        } = await this.$apollo.mutate({
+          mutation: createAccount,
           variables: {
-            firstname,
-            lastname,
-            email,
-            password
+            input: {
+              firstname,
+              lastname,
+              email,
+              password
+            }
           }
         });
 
-        // Clear form fields
-        this.firstname = "";
-        this.lastname = "";
-        this.email = "";
-        this.password = "";
-        this.error = null;
+        if (token) {
+          // Save token to browser storage
+          localStorage.setItem("meetup-token", token);
 
-        // Save token to localStorage
-        localStorage.setItem("token", response.data.createAccount.token);
+          // Clear form fields
+          this.firstname = "";
+          this.lastname = "";
+          this.email = "";
+          this.password = "";
 
-        // Redirect
+          // Set notification
+          this.notificationType = "success";
+          this.successMessage = "Successful account creation!";
+          this.errorMessage = null;
+
+          // Update auth status in store
+          this.setAuth(authenticated);
+
+          // Redirect to previous page
+          // this.$router.replace(this.$route.query.from);
+          this.$router.push("/");
+        }
       } catch (error) {
-        this.error = error.message;
+        this.errorMessage = error.message;
+        this.successMessage = null;
+        this.notificationType = "error";
       }
+    },
+    closeNotification() {
+      this.errorMessage = null;
+      this.successMessage = null;
+      this.notificationType = "";
     }
   }
 };

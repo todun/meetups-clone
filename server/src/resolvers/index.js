@@ -1,13 +1,13 @@
-import { mergeResolvers } from 'merge-graphql-schemas';
-
+import authResolvers from './auth';
 import cityResolvers from './city';
 import meetupResolvers from './meetup';
 import userResolvers from './user';
 
 const resolvers = [
+	authResolvers,
   cityResolvers,
   meetupResolvers,
-  userResolvers
+  userResolvers,
 ];
 
-export default mergeResolvers(resolvers, { all: true });
+export default resolvers;

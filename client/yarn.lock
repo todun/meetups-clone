@@ -1351,10 +1351,10 @@ apollo-link-http@^1.5.5:
     apollo-link "^1.2.3"
     apollo-link-http-common "^0.2.5"
 
-apollo-link-state@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/apollo-link-state/-/apollo-link-state-0.4.2.tgz#ac00e9be9b0ca89eae0be6ba31fe904b80bbe2e8"
-  integrity sha512-xMPcAfuiPVYXaLwC6oJFIZrKgV3GmdO31Ag2eufRoXpvT0AfJZjdaPB4450Nu9TslHRePN9A3quxNueILlQxlw==
+apollo-link-state@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/apollo-link-state/-/apollo-link-state-0.4.1.tgz#65e9e0e12c67936b8c4b12b8438434f393104579"
+  integrity sha512-69/til4ENfl/Fvf7br2xSsLSBcxcXPbOHVNkzLLejvUZickl93HLO4/fO+uvoBi4dCYRgN17Zr8FwI41ueRx0g==
   dependencies:
     apollo-utilities "^1.0.8"
     graphql-anywhere "^4.1.0-alpha.0"
@@ -1367,13 +1367,20 @@ apollo-link@^1.0.0, apollo-link@^1.2.3:
     apollo-utilities "^1.0.0"
     zen-observable-ts "^0.8.10"
 
-apollo-utilities@1.0.21, apollo-utilities@^1.0.0, apollo-utilities@^1.0.21, apollo-utilities@^1.0.8:
+apollo-utilities@1.0.21, apollo-utilities@^1.0.0, apollo-utilities@^1.0.21:
   version "1.0.21"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.21.tgz#cb8b5779fe275850b16046ff8373f4af2de90765"
   integrity sha512-ZcxELlEl+sDCYBgEMdNXJAsZtRVm8wk4HIA58bMsqYfd1DSAJQEtZ93F0GZgYNAGy3QyaoBeZtbb0/01++G8JQ==
   dependencies:
     fast-json-stable-stringify "^2.0.0"
     fclone "^1.0.11"
+
+apollo-utilities@^1.0.22, apollo-utilities@^1.0.8:
+  version "1.0.23"
+  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.23.tgz#9416e5da31cc8d9d46502de6f90aa1447cd368c6"
+  integrity sha512-RW65kZZxSEysvzm5YBrNU6SvE+Z62VQ+lpxYX/3d9pZYsMBkaMdfr3OnUwGKt/MqUsDfUb/LLoXpMRhKukMpeQ==
+  dependencies:
+    fast-json-stable-stringify "^2.0.0"
 
 append-transform@^0.4.0:
   version "0.4.0"
@@ -4451,7 +4458,14 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
   integrity sha1-Dovf5NHduIVNZOBOp8AOKgJuVlg=
 
-graphql-anywhere@^4.1.0-alpha.0, graphql-anywhere@^4.1.19:
+graphql-anywhere@^4.1.0-alpha.0:
+  version "4.1.20"
+  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.20.tgz#636186e89e5f817c4f277b8781fb02d43032d342"
+  integrity sha512-Imz2d2BYsBP7nY1+7wSAtGAPZq16BBoqN6/rSEqjgDRJHLQ+2Tu4ipCldWLgYwoHP8Z/TZdH/sD+fcJ/ulwTEw==
+  dependencies:
+    apollo-utilities "^1.0.22"
+
+graphql-anywhere@^4.1.19:
   version "4.1.19"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.19.tgz#5f6ca3b58218e5449f4798e3c6d942fcd2fef082"
   integrity sha512-mQlvbECzYPBcgBC9JsdM4v+DSvNmcIP+8Vwr+ij3gktbaLSE0Iza30mztuz40Jlf7ooMs+0emBZucNjLzqz7tA==

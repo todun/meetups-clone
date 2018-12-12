@@ -10,7 +10,11 @@
 					<div class="column">
 						<h3 class="heading-three">Find a Meetup</h3>
 						<p>Discover local Meetups for all the things you love.</p>
-						<router-link class="link" to="/accounts/signup">Sign up <span><i class="fas fa-arrow-right"></i></span></router-link>
+						<router-link 
+              v-show="!isAuthenticated" 
+              class="link" 
+              to="/accounts/signup"
+            >Sign up <span><i class="fas fa-arrow-right"></i></span></router-link>
 					</div>
 				</div> 
 			</div>
@@ -31,10 +35,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "how-it-works",
-  data() {
-    return {};
+  computed: {
+    ...mapGetters({ isAuthenticated: "auth/isAuthenticated" })
   }
 };
 </script>

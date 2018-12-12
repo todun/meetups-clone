@@ -1,27 +1,27 @@
 <template>
-	<div class="meetup-group page">
-		<meetup-header />
-		<hr class="divider">
-		<meetup-nav />
-		<div class="group-main">
-			<div class="group__row">
-				<div class="group__column group__column--main">
-					<next-meetup />
-					<about-meetup />
-					<meetup-members />
-					<meetup-photos />
-					<meetup-discussions />
-				</div>
-				<div class="group__column group__column--upcoming">
-					<template v-for="meetup in [1,2,3,4]">
-						<upcoming-meetups :key="meetup" />
-					</template>
-				</div>
-			</div>
-			<related-topics />
-			<related-meetups />
-		</div>
-	</div>
+  <div class="meetup-group page">
+    <meetup-header />
+    <hr class="divider" />
+    <meetup-nav />
+    <div class="group-main">
+      <div class="group__row">
+        <div class="group__column group__column--main">
+          <next-meetup />
+          <about-meetup />
+          <meetup-members />
+          <meetup-photos />
+          <meetup-discussions />
+        </div>
+        <div class="group__column group__column--upcoming">
+          <template v-for="meetup in [1, 2, 3, 4]">
+            <upcoming-meetups :key="meetup" />
+          </template>
+        </div>
+      </div>
+      <related-topics />
+      <related-meetups />
+    </div>
+  </div>
 </template>
 
 <script>

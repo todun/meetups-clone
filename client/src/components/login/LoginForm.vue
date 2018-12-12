@@ -13,10 +13,10 @@
         v-show="successMessage" 
         :message="successMessage"
         notification-type="success"
-        :close-notification="closeNotification" 
+        :close-notification="closeNotification"
       />
     </transition>
-  	<form class="form">
+  	<form class="form" @submit.prevent="login">
   		<div class="form-grp">
   			<label class="form-label" for="email">Email address</label>
   			<input class="form-input" type="email" id="email" name="email" v-model="email">
@@ -27,13 +27,14 @@
   			<input class="form-input" type="password" id="password" name="password" v-model="password">
   		</div>
   		<div class="form-grp">
-  			<button class="button" @click.prevent="login">Continue</button>
+  			<button type="submit" class="button">Continue</button>
   		</div>
   	</form>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import Notification from "../shared/Notification";
 import { loginToAccount } from "@/graphql/mutations";
 
@@ -51,28 +52,45 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({ setAuth: "auth/setAuth" }),
     async login() {
       const { email, password } = this.$data;
 
       try {
-        const response = await this.$apollo.mutate({
+        const {
+          data: {
+            login: { authenticated, token }
+          }
+        } = await this.$apollo.mutate({
           mutation: loginToAccount,
           variables: {
-            email,
-            password
+            input: {
+              email,
+              password
+            }
           }
         });
 
-        // Save token to localStorage
-        localStorage.setItem("token", response.data.loginToAccount.token);
+        if (token) {
+          // Save token to browser storage
+          localStorage.setItem("meetup-token", token);
 
-        // Clear form fields
-        this.email = "";
-        this.password = "";
+          // Clear form fields
+          this.email = "";
+          this.password = "";
 
-        this.successMessage = "Successful login!";
-        this.errorMessage = null;
-        this.notificationType = "success";
+          // Set notification
+          this.successMessage = "Successful login!";
+          this.errorMessage = null;
+          this.notificationType = "success";
+
+          // Update auth status in store
+          this.setAuth(authenticated);
+
+          // Redirect to previous page
+          // this.$router.replace(this.$route.query.from);
+          this.$router.push("/");
+        }
       } catch (error) {
         this.errorMessage = error.message;
         this.successMessage = null;

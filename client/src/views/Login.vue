@@ -1,18 +1,16 @@
 <template>
-	<div class="login page">
-		<div class="card">
-			<h2 class="heading-two">Log in</h2>
-			<p>
-				<span>Not registered with us yet? </span>
-				<router-link to="/accounts/signup">Sign up</router-link>.
-			</p>
-			<hr class="divider">
-			<login-form />
-			<div class="social">
-				<social-login />
-			</div>
-		</div>
-	</div>
+  <div class="login page">
+    <div class="card">
+      <h2 class="heading-two">Log in</h2>
+      <p>
+        <span>Not registered with us yet? </span>
+        <router-link to="/accounts/signup">Sign up</router-link>.
+      </p>
+      <hr class="divider" />
+      <login-form />
+      <div class="social"><social-login /></div>
+    </div>
+  </div>
 </template>
 
 <script>

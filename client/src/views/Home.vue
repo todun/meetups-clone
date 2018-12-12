@@ -2,8 +2,7 @@
   <div class="home page">
     <home-header />
     <home-nav />
-    <suggested />
-    <explore />
+    <suggested /> <explore />
     <how-it-works />
     <get-app />
     <home-footer />

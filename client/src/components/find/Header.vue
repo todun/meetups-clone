@@ -21,7 +21,7 @@
 		<router-link 
       class="button" 
       to="/accounts/signup" 
-      v-show="!isLoggedIn"
+      v-show="!isAuthenticated"
     >
       Sign me up!
     </router-link>
@@ -29,19 +29,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "find-meetup-header",
   props: {
     meetupType: {
-      type: String
+      type: String,
+      required: true
     }
   },
-  data() {
-    return {
-      isLoggedIn: false
-    };
-  },
   computed: {
+    ...mapGetters(["isAuthenticated"]),
     formattedMeetupType() {
       return this.meetupType
         .toLowerCase()

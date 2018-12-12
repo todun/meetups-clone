@@ -44,12 +44,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "meetups-header",
-  data() {
-    return {
-      isAuthenticated: false
-    };
+  computed: {
+    ...mapGetters({ isAuthenticated: "auth/isAuthenticated" })
   }
 };
 </script>

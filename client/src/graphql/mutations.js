@@ -1,11 +1,11 @@
-import { gql } from "graphql-tag";
+import gql from "graphql-tag";
 
 export const createNewMeetup = gql`
   mutation CreateMeetup(
     $addedBy: ID!
-    $location: String!
-    $type: String!
-    $details: MeetupDetails!
+    $location: MeetupLocationInput!
+    $type: [String!]!
+    $details: MeetupDetailsInput!
   ) {
     createMeetup(
       addedBy: $addedBy
@@ -13,17 +13,29 @@ export const createNewMeetup = gql`
       type: $type
       details: $details
     ) {
-      addedBy
-      location
+      addedBy {
+        id
+        fullname
+      }
+      location {
+        name
+        latitude
+        longitude
+      }
       type
-      details
+      details {
+        hostedBy {
+          fullname
+        }
+        description
+      }
     }
   }
 `;
 
 export const createAccount = gql`
-  mutation CreateAccount($name: String!, $email: String!, $password: String!) {
-    createAccount(name: $name, email: $email, password: $password) {
+  mutation Signup($input: SignupInput!) {
+    signup(input: $input) {
       authenticated
       token
     }
@@ -31,8 +43,8 @@ export const createAccount = gql`
 `;
 
 export const loginToAccount = gql`
-  mutation LoginToAccount($email: String!, $password: String!) {
-    loginToAccount(email: $email, password: $password) {
+  mutation Login($input: LoginInput!) {
+    login(input: $input) {
       authenticated
       token
     }

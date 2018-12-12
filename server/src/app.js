@@ -1,56 +1,75 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
-import { makeExecutableSchema } from 'graphql-tools';
 import cors from 'cors';
-import morgan from 'morgan';
-import path from 'path';
+import express from 'express';
+import passport from 'passport';
+import { ApolloServer } from 'apollo-server-express';
 
-import typeDefs from './schemas';
 import resolvers from './resolvers';
+import typeDefs from './schemas';
 
-import Meetup from './models/meetup';
-import City from './models/city';
-import User from './models/user';
+import models from './models';
 
 // DB config
 import './db';
 
+import './services/passport';
+
+import { currentUser } from './helpers';
+import config from './config';
+
+const { frontend_dev_url, frontend_prod_url } = config;
+
 // App init
 const app = express();
 
+// Init. passport
+passport.initialize();
+
+const url = process.env.NODE_ENV === 'production'
+  ? frontend_prod_url
+  : frontend_dev_url;
+
+const corsOptions = {
+  origin: (origin, callback) =>
+    (url.indexOf(origin) !== -1)
+      ? callback(null, true)
+      : callback(new Error('Access Denied!'))
+};
+
 // Middlewares
-app.use(express.static(path.join(__dirname, '../../client/dist')));
-app.use(morgan('dev'));
 app.use(cors());
 
-// Serve static assets if in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../../client/dist'));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../client', 'dist', 'index.html'));
-  });
-}
-
-// Schema definition
-const schema = makeExecutableSchema({
+// Apollo server instance
+const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  async context({ req, res }) {
+    const token = req.headers['x-access-token'] || req.headers['authorization'];
+
+    return {
+      currentUser: await currentUser(token),
+      models,
+      req,
+    };
+  },
+  playground: {
+    endpoint: '/graphql',
+    settings: {
+      'editor.theme': 'dark',
+      'editor.cursorShape': 'line',
+    },
+  },
+  formatError: error => {
+    const message = error.message
+      .replace('SequelizeValidationError: ', '')
+      .replace('Validation error: ', '');
+
+    return {
+      ...error,
+      message,
+    };
+  },
 });
 
-// Graphql Endpoint
-const endpointURL = '/graphql';
-
-app.use(
-  endpointURL,
-  bodyParser.json(),
-  graphqlExpress({
-    schema,
-    context: { Meetup, City, User },
-  })
-);
-app.use('/graphiql', bodyParser.json(), graphiqlExpress({ endpointURL }));
-app.use(morgan('dev'));
+apolloServer.applyMiddleware({ app, path: '/graphql' });
 
 export default app;

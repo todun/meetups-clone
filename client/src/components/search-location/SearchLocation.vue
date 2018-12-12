@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import { changeLocation } from "@/graphql/mutations";
+//import { changeLocation } from "@/graphql/mutations";
+import { mapMutations } from "vuex";
 
 export default {
   name: "search-location",
@@ -17,6 +18,9 @@ export default {
     location: {
       type: Object
     }
+  },
+  methods: {
+    ...mapMutations(["changeLocation"])
   },
   mounted() {
     // eslint-disable-next-line
@@ -36,12 +40,14 @@ export default {
 
       const newLocation = { ...this.location, ...location };
 
-      this.$apollo.mutate({
-        mutation: changeLocation,
-        variables: {
-          location: newLocation
-        }
-      });
+      // this.$apollo.mutate({
+      //   mutation: changeLocation,
+      //   variables: {
+      //     location: newLocation
+      //   }
+      // });
+
+      this.changeLocation(newLocation);
 
       this.$eventBus.$emit("change-location", newLocation);
     });

@@ -12,4 +12,8 @@ const ReplySchema = new Schema(
   }
 );
 
+ReplySchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
 export default mongoose.model('Reply', ReplySchema);

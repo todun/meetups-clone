@@ -10,4 +10,8 @@ const CitySchema = new Schema({
 	timestamps: true,
 });
 
+CitySchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
 export default mongoose.model('City', CitySchema);

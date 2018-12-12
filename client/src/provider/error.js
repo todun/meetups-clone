@@ -1,6 +1,7 @@
 import { onError } from "apollo-link-error";
 
 // Error handling
+/* eslint-disable */
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.map(({ message, locations, path }) => {

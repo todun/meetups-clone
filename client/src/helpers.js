@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // Home nav links
 export const links = [
   { name: "Join a Movement", path: "/movements" },
@@ -70,3 +72,19 @@ export const footerLinks = [
   { name: "Browse Cities", path: "/cities" },
   { name: "Blog", path: "/blog" }
 ];
+
+// Current location promise
+export function getCurrentLocation() {
+  return axios.get("http://ipinfo.io");
+}
+
+// Vuex actions success/failure handlers
+export function handleActionStatus(commit, error = null) {
+  if (error) {
+    commit("setError", error.message, { root: true });
+    commit("setLoading", false, { root: true });
+  } else {
+    commit("setLoading", false, { root: true });
+    commit("clearError");
+  }
+}

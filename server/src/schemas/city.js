@@ -1,19 +1,19 @@
-export default `
+import { gql } from 'apollo-server-express';
 
-type City {
-  _id: ID!
-  name: String!
-  country: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
+export default gql`
+	type City {
+	  id: ID!
+	  name: String!
+	  country: String!
+	  createdAt: Date!
+	  updatedAt: Date!
+	}
 
-type Query {
-	allCities: [City!]!
-}
+	extend type Query {
+		allCities: [City!]!
+	}
 
-type Mutation {
-  addCity(name: String!, country: String!): City
-}
-
-`
+	extend type Mutation {
+	  addCity(name: String!, country: String!): City!
+	}
+`;
